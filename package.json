@@ -1,0 +1,25 @@
+{
+  "name": "avoid-the-sock",
+  "version": "1.0.0",
+  "description": "Find your monster friends and avoid the sock! A game inspired by Monsters, Inc.",
+  "main": "assets/js/app.js",
+  "scripts": {
+    "gulp": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kieranbarker/avoid-the-sock.git"
+  },
+  "author": "Kieran Barker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kieranbarker/avoid-the-sock/issues"
+  },
+  "homepage": "https://github.com/kieranbarker/avoid-the-sock#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-terser": "^1.2.0"
+  }
+}
