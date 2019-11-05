@@ -4,6 +4,8 @@
    * Variables
    */
 
+  var app = d.querySelector("#app");
+
   var monsters = [
     "monster1",
     "monster2",
@@ -49,5 +51,33 @@
 
     return array;
   }
+
+  function createCell(monster) {
+    return (
+      "<div class='cell'>" +
+        "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+      "</div>"
+    );
+  }
+
+  function template() {
+    return (
+      "<div class='grid'>" +
+        shuffle(monsters).map(createCell).join("") +
+      "</div>"
+    );
+  }
+
+  function render() {
+    app.innerHTML = template();
+  }
+
+
+
+  /**
+   * Init
+   */
+
+  render();
 
 })(document);
