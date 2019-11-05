@@ -19,6 +19,7 @@
   "homepage": "https://github.com/kieranbarker/avoid-the-sock#readme",
   "dependencies": {
     "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
     "gulp-rename": "^1.4.0",
     "gulp-terser": "^1.2.0"
   }
