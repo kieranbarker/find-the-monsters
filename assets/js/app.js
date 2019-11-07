@@ -57,7 +57,9 @@
   function createCell(monster) {
     return (
       "<div class='cell'>" +
-        "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+        "<button type='button' data-monster='" + monster + "'>" +
+          "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
+        "</button>" +
       "</div>"
     );
   }
