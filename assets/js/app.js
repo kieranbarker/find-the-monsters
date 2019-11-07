@@ -76,6 +76,16 @@
     app.innerHTML = template();
   }
 
+  function openDoor(event) {
+    if (!event.target.closest("button")) return;
+
+    var door = event.target.closest("button");
+    var monster = door.getAttribute("data-monster");
+    var img = "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>";
+
+    door.parentNode.innerHTML = img;
+  }
+
 
 
   /**
@@ -83,5 +93,7 @@
    */
 
   render();
+
+  app.addEventListener("click", openDoor, false);
 
 })(document);
