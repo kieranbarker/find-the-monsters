@@ -8,7 +8,7 @@
 
   var app = d.querySelector("#app");
 
-  var monsters = [
+  var monstersHidden = [
     "monster1",
     "monster2",
     "monster3",
@@ -22,6 +22,8 @@
     "monster11",
     "sock"
   ];
+
+  var monstersFound = [];
 
 
 
@@ -55,6 +57,14 @@
   }
 
   function createCell(monster) {
+    if (monstersFound.indexOf(monster) > -1) {
+      return (
+        "<div class='cell'>" +
+          "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+        "</div>"
+      );
+    }
+
     return (
       "<div class='cell'>" +
         "<button type='button' data-monster='" + monster + "'>" +
@@ -67,7 +77,7 @@
   function template() {
     return (
       "<div class='grid'>" +
-        shuffle(monsters).map(createCell).join("") +
+        monstersHidden.map(createCell).join("") +
       "</div>"
     );
   }
@@ -79,11 +89,13 @@
   function openDoor(event) {
     if (!event.target.closest("button")) return;
 
-    var door = event.target.closest("button");
-    var monster = door.getAttribute("data-monster");
-    var img = "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>";
+    var monster = event.target.closest("button").getAttribute("data-monster");
 
-    door.parentNode.innerHTML = img;
+    if (monstersFound.indexOf(monster) === -1) {
+      monstersFound.push(monster);
+    }
+
+    render();
   }
 
 
@@ -91,6 +103,8 @@
   /**
    * Init
    */
+
+  shuffle(monstersHidden);
 
   render();
 
