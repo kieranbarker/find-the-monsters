@@ -1,12 +1,14 @@
 ;(function(d) {
 
+  "use strict";
+
   /**
    * Variables
    */
 
   var app = d.querySelector("#app");
 
-  var monsters = [
+  var monstersHidden = [
     "monster1",
     "monster2",
     "monster3",
@@ -20,6 +22,8 @@
     "monster11",
     "sock"
   ];
+
+  var monstersFound = [];
 
 
 
@@ -53,9 +57,19 @@
   }
 
   function createCell(monster) {
+    if (monstersFound.indexOf(monster) > -1) {
+      return (
+        "<div class='cell'>" +
+          "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+        "</div>"
+      );
+    }
+
     return (
       "<div class='cell'>" +
-        "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+        "<button type='button' data-monster='" + monster + "'>" +
+          "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
+        "</button>" +
       "</div>"
     );
   }
@@ -63,7 +77,7 @@
   function template() {
     return (
       "<div class='grid'>" +
-        shuffle(monsters).map(createCell).join("") +
+        monstersHidden.map(createCell).join("") +
       "</div>"
     );
   }
@@ -72,12 +86,28 @@
     app.innerHTML = template();
   }
 
+  function openDoor(event) {
+    if (!event.target.closest("button")) return;
+
+    var monster = event.target.closest("button").getAttribute("data-monster");
+
+    if (monstersFound.indexOf(monster) === -1) {
+      monstersFound.push(monster);
+    }
+
+    render();
+  }
+
 
 
   /**
    * Init
    */
 
+  shuffle(monstersHidden);
+
   render();
+
+  app.addEventListener("click", openDoor, false);
 
 })(document);

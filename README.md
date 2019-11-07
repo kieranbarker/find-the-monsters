@@ -8,4 +8,8 @@ My fifth project as part of the [Vanilla JS Academy](https://vanillajsacademy.co
 
 Take an array of monsters (and a sock), mix them up, and display them in the DOM.
 
+## Part 2
+
+Display a grid of doors. Upon clicking/tapping a door, reveal the monster/sock behind it.
+
 [View Demo](https://kieranbarker.github.io/avoid-the-sock/)

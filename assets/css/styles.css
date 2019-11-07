@@ -4,6 +4,11 @@ body {
   margin: 1em auto;
 }
 
+button {
+  border: none;
+  background: none;
+}
+
 img {
   max-width: 100%;
   height: auto;
