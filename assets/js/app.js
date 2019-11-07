@@ -87,9 +87,10 @@
   }
 
   function openDoor(event) {
-    if (!event.target.closest("button")) return;
+    var monster = event.target.closest("button");
+    if (!monster) return;
 
-    var monster = event.target.closest("button").getAttribute("data-monster");
+    monster = monster.getAttribute("data-monster");
 
     if (monstersFound.indexOf(monster) === -1) {
       monstersFound.push(monster);
