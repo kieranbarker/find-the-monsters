@@ -2,6 +2,8 @@
 
   "use strict";
 
+  // To do: use aria-live for screen readers
+
   /**
    * Variables
    */
@@ -53,10 +55,12 @@
     return array;
   }
 
-  // Create the cells of monsters/doors for the grid
+  /**
+   * Create the cells of monsters/doors for the grid
+   */
   function createCells(props) {
     return (
-      props.monstersHidden.map(function(monster) {
+      props.monstersHidden.map(function(monster, index) {
         if (props.monstersFound.indexOf(monster) > -1) {
           return (
             "<div class='cell'>" +
@@ -67,7 +71,7 @@
 
         return (
           "<div class='cell'>" +
-            "<button type='button' data-monster='" + monster + "'>" +
+            "<button type='button' data-monster='" + index + "'>" +
               "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
             "</button>" +
           "</div>"
@@ -76,18 +80,28 @@
     );
   }
 
-  // Reveal the monster/sock behind a door
+  /**
+   * Reveal the monster/sock behind a door
+   */
   function openDoor(event) {
+    // Get the closest button
     var monster = event.target.closest("button");
     if (!monster) return;
 
+    // Get the current app data
     var data = app.getData();
-    monster = monster.getAttribute("data-monster");
 
+    // Get the array index of the monster/sock behind this door
+    // Then get the value at this index
+    monster = parseInt(monster.getAttribute("data-monster"), 10);
+    monster = data.monstersHidden.splice(monster, 1).toString();
+
+    // If the monster/sock has not been found already, add it to the array
     if (data.monstersFound.indexOf(monster) === -1) {
       app.data.monstersFound.push(monster);
     }
 
+    // Update the UI
     app.render();
   }
 
