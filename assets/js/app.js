@@ -53,6 +53,7 @@
     return array;
   }
 
+  // Create the cells of monsters/doors for the grid
   function createCells(props) {
     return (
       props.monstersHidden.map(function(monster) {
@@ -75,6 +76,7 @@
     );
   }
 
+  // Reveal the monster/sock behind a door
   function openDoor(event) {
     var monster = event.target.closest("button");
     if (!monster) return;
