@@ -16,7 +16,7 @@
     template: function(props) {
       return (
         "<div class='grid'>" +
-          createCell(props) +
+          createCells(props) +
         "</div>"
       );
     }
@@ -53,24 +53,26 @@
     return array;
   }
 
-  function createCell(props) {
-    return props.monstersHidden.map(function(monster) {
-      if (props.monstersFound.indexOf(monster) > -1) {
+  function createCells(props) {
+    return (
+      props.monstersHidden.map(function(monster) {
+        if (props.monstersFound.indexOf(monster) > -1) {
+          return (
+            "<div class='cell'>" +
+              "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+            "</div>"
+          );
+        }
+
         return (
           "<div class='cell'>" +
-            "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+            "<button type='button' data-monster='" + monster + "'>" +
+              "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
+            "</button>" +
           "</div>"
         );
-      }
-
-      return (
-        "<div class='cell'>" +
-          "<button type='button' data-monster='" + monster + "'>" +
-            "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
-          "</button>" +
-        "</div>"
-      );
-    }).join("");
+      }).join("")
+    );
   }
 
   function openDoor(event) {
