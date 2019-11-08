@@ -2,8 +2,6 @@
 
   "use strict";
 
-  // To do: use aria-live for screen readers
-
   /**
    * Variables
    */
@@ -63,14 +61,14 @@
       props.monstersHidden.map(function(monster, index) {
         if (props.monstersFound.indexOf(monster) > -1) {
           return (
-            "<div class='cell'>" +
+            "<div class='cell' aria-live='polite'>" +
               "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
             "</div>"
           );
         }
 
         return (
-          "<div class='cell'>" +
+          "<div class='cell' aria-live='polite'>" +
             "<button type='button' data-monster='" + index + "'>" +
               "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
             "</button>" +
