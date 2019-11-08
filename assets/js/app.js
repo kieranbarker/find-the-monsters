@@ -6,24 +6,21 @@
    * Variables
    */
 
-  var app = d.querySelector("#app");
+  var root = d.querySelector("#app");
 
-  var monstersHidden = [
-    "monster1",
-    "monster2",
-    "monster3",
-    "monster4",
-    "monster5",
-    "monster6",
-    "monster7",
-    "monster8",
-    "monster9",
-    "monster10",
-    "monster11",
-    "sock"
-  ];
-
-  var monstersFound = [];
+  var app = new Reef(root, {
+    data: {
+      monstersHidden: ["sock"],
+      monstersFound: []
+    },
+    template: function(props) {
+      return (
+        "<div class='grid'>" +
+          createCell(props) +
+        "</div>"
+      );
+    }
+  });
 
 
 
@@ -56,47 +53,38 @@
     return array;
   }
 
-  function createCell(monster) {
-    if (monstersFound.indexOf(monster) > -1) {
+  function createCell(props) {
+    return props.monstersHidden.map(function(monster) {
+      if (props.monstersFound.indexOf(monster) > -1) {
+        return (
+          "<div class='cell'>" +
+            "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+          "</div>"
+        );
+      }
+
       return (
         "<div class='cell'>" +
-          "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+          "<button type='button' data-monster='" + monster + "'>" +
+            "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
+          "</button>" +
         "</div>"
       );
-    }
-
-    return (
-      "<div class='cell'>" +
-        "<button type='button' data-monster='" + monster + "'>" +
-          "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
-        "</button>" +
-      "</div>"
-    );
-  }
-
-  function template() {
-    return (
-      "<div class='grid'>" +
-        monstersHidden.map(createCell).join("") +
-      "</div>"
-    );
-  }
-
-  function render() {
-    app.innerHTML = template();
+    }).join("");
   }
 
   function openDoor(event) {
     var monster = event.target.closest("button");
     if (!monster) return;
 
+    var data = app.getData();
     monster = monster.getAttribute("data-monster");
 
-    if (monstersFound.indexOf(monster) === -1) {
-      monstersFound.push(monster);
+    if (data.monstersFound.indexOf(monster) === -1) {
+      app.data.monstersFound.push(monster);
     }
 
-    render();
+    app.render();
   }
 
 
@@ -105,10 +93,18 @@
    * Init
    */
 
-  shuffle(monstersHidden);
+  // Add 11 monsters to the array of hidden monsters
+  for (var i = 1; i <= 11; i++) {
+    app.data.monstersHidden.push("monster" + i);
+  }
 
-  render();
+  // Shuffle the array of hidden monsters
+  app.data.monstersHidden = shuffle(app.data.monstersHidden);
 
-  app.addEventListener("click", openDoor, false);
+  // Render the initial UI
+  app.render();
+
+  // Update the UI when a door is opened
+  root.addEventListener("click", openDoor, false);
 
 })(document);
