@@ -6,24 +6,21 @@
    * Variables
    */
 
-  var app = d.querySelector("#app");
+  var root = d.querySelector("#app");
 
-  var monstersHidden = [
-    "monster1",
-    "monster2",
-    "monster3",
-    "monster4",
-    "monster5",
-    "monster6",
-    "monster7",
-    "monster8",
-    "monster9",
-    "monster10",
-    "monster11",
-    "sock"
-  ];
-
-  var monstersFound = [];
+  var app = new Reef(root, {
+    data: {
+      monstersHidden: ["sock"],
+      monstersFound: []
+    },
+    template: function(props) {
+      return (
+        "<div class='grid'>" +
+          createCells(props) +
+        "</div>"
+      );
+    }
+  });
 
 
 
@@ -56,46 +53,54 @@
     return array;
   }
 
-  function createCell(monster) {
-    if (monstersFound.indexOf(monster) > -1) {
-      return (
-        "<div class='cell'>" +
-          "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
-        "</div>"
-      );
-    }
-
+  /**
+   * Create the cells of monsters/doors for the grid
+   */
+  function createCells(props) {
     return (
-      "<div class='cell'>" +
-        "<button type='button' data-monster='" + monster + "'>" +
-          "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
-        "</button>" +
-      "</div>"
+      props.monstersHidden.map(function(monster, index) {
+        if (props.monstersFound.indexOf(monster) > -1) {
+          return (
+            "<div class='cell' aria-live='polite'>" +
+              "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
+            "</div>"
+          );
+        }
+
+        return (
+          "<div class='cell' aria-live='polite'>" +
+            "<button type='button' data-monster='" + index + "'>" +
+              "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
+            "</button>" +
+          "</div>"
+        );
+      }).join("")
     );
   }
 
-  function template() {
-    return (
-      "<div class='grid'>" +
-        monstersHidden.map(createCell).join("") +
-      "</div>"
-    );
-  }
-
-  function render() {
-    app.innerHTML = template();
-  }
-
+  /**
+   * Reveal the monster/sock behind a door
+   */
   function openDoor(event) {
-    if (!event.target.closest("button")) return;
+    // Get the closest button
+    var monster = event.target.closest("button");
+    if (!monster) return;
 
-    var monster = event.target.closest("button").getAttribute("data-monster");
+    // Get the current app data
+    var data = app.getData();
 
-    if (monstersFound.indexOf(monster) === -1) {
-      monstersFound.push(monster);
+    // Get the array index of the monster/sock behind this door
+    // Then get the value at this index
+    monster = parseInt(monster.getAttribute("data-monster"), 10);
+    monster = data.monstersHidden.splice(monster, 1).toString();
+
+    // If the monster/sock has not been found already, add it to the array
+    if (data.monstersFound.indexOf(monster) === -1) {
+      app.data.monstersFound.push(monster);
     }
 
-    render();
+    // Update the UI
+    app.render();
   }
 
 
@@ -104,10 +109,18 @@
    * Init
    */
 
-  shuffle(monstersHidden);
+  // Add 11 monsters to the array of hidden monsters
+  for (var i = 1; i <= 11; i++) {
+    app.data.monstersHidden.push("monster" + i);
+  }
 
-  render();
+  // Shuffle the array of hidden monsters
+  app.data.monstersHidden = shuffle(app.data.monstersHidden);
 
-  app.addEventListener("click", openDoor, false);
+  // Render the initial UI
+  app.render();
+
+  // Update the UI when a door is opened
+  root.addEventListener("click", openDoor, false);
 
 })(document);
