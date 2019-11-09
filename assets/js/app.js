@@ -115,7 +115,7 @@
    */
   function openDoor(event) {
     // Get the closest button
-    var monster = event.target.closest("button");
+    var monster = event.target.closest("[data-monster]");
     if (!monster) return;
 
     // Get the current app data
