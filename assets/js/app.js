@@ -11,10 +11,27 @@
   var app = new Reef(root, {
     data: {
       monstersHidden: ["sock"],
-      monstersFound: []
+      monstersFound: [],
+      win: null
     },
     template: function(props) {
+      if (props.win === true) {
+        return (
+          "<p>You won!</p>" +
+          "<button type='button' data-restart>Play Again</button>"
+        );
+      }
+
+      if (props.win === false) {
+        return (
+          "<p>You lost!</p>" +
+          "<button type='button' data-restart>Play Again</button>"
+        );
+      }
+
       return (
+        "<p>Click/tap a door to reveal a monster... 👹</p>" +
+        "<p>But try not to find the sock! 🧦</p>" +
         "<div class='grid'>" +
           createCells(props) +
         "</div>"
@@ -81,6 +98,19 @@
   }
 
   /**
+   * Handle win or loss
+   */
+  function handleWinOrLoss(data) {
+    if (data.monstersFound.indexOf("sock") > -1) {
+      data.win = false;
+    } else {
+      if (data.monstersFound.length === 11) {
+        data.win = true;
+      }
+    }
+  }
+
+  /**
    * Reveal the monster/sock behind a door
    */
   function openDoor(event) {
@@ -101,7 +131,29 @@
       data.monstersFound.push(monster);
     }
 
+    // Handle win/loss if applicable
+    handleWinOrLoss(data);
+
     // Update the UI
+    app.setData(data);
+  }
+
+  /**
+   * Start a new game
+   */
+  function newGame(event) {
+    // Bail if not a "Play Again" button
+    if (!event.target.hasAttribute("data-restart")) return;
+
+    // Get the current state of the UI
+    var data = app.getData();
+
+    // Update the data
+    data.monstersHidden = shuffle(data.monstersHidden);
+    data.monstersFound = [];
+    data.win = null;
+
+    // Render the new UI
     app.setData(data);
   }
 
@@ -123,6 +175,9 @@
   app.setData(data);
 
   // Update the UI when a door is opened
-  root.addEventListener("click", openDoor, false);
+  root.addEventListener("click", function(event) {
+    openDoor(event);
+    newGame(event);
+  }, false);
 
 })(document);
