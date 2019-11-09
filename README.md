@@ -12,4 +12,8 @@ Take an array of monsters (and a sock), mix them up, and display them in the DOM
 
 Display a grid of doors. Upon clicking/tapping a door, reveal the monster/sock behind it.
 
+## Part 3
+
+Handle the win/loss and allow the user to start a new game.
+
 [View Demo](https://kieranbarker.github.io/avoid-the-sock/)
