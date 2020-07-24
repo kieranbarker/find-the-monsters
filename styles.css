@@ -12,15 +12,10 @@ body {
   margin: 1em auto;
   background-color: #ececec;
   font: 1em/1.5 "Avenir Next", Avenir, sans-serif;
-}
-
-header,
-main {
   text-align: center;
 }
 
-h1,
-a {
+h1, a {
   color: #7e0f7e;
 }
 
@@ -53,14 +48,14 @@ ul {
 
 @media (min-width: 31.25em) {
 
-  ul,
-  p {
+  ul, p {
     font-size: 1.25em;
   }
 
 }
 
 button {
+  border: 0;
   font: inherit;
 }
 
@@ -83,7 +78,6 @@ button {
 
 .grid-button {
   padding: 0;
-  border: 0;
   background: none;
 }
 
@@ -99,15 +93,13 @@ button {
 
 .reset-button {
   padding: .5em 1em;
-  border: 0;
   border-bottom: .25em solid #34ac52;
   border-radius: .25em;
   background: #7e0f7e;
   color: #fff;
 }
 
-.reset-button:hover,
-.reset-button:active {
+.reset-button:hover, .reset-button:active {
   background: #680d68;
 }
 
@@ -119,10 +111,6 @@ button {
 /**
  * Credits
  */
-
-.credits {
-  text-align: center;
-}
 
 .credits-paragraph {
   display: inline-block;
