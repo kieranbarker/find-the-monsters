@@ -1,59 +1,47 @@
-;(function(d) {
+;(function () {
 
+  // Opt into ES5 strict mode
   "use strict";
 
-  /**
-   * Variables
-   */
+  //
+  // Variables
+  //
 
-  var root = d.querySelector("#app");
+  // Get the main element
+  var main = document.querySelector("main");
 
-  var app = new Reef(root, {
-    data: {
-      monstersHidden: ["sock"],
-      monstersFound: [],
-      win: null
-    },
-    template: function(props) {
-      if (props.win === true) {
-        return (
-          "<p>You won!</p>" +
-          "<button type='button' data-restart>Play Again</button>"
-        );
-      }
+  // Store the array of monsters
+  var monsters = [
+    { src: "monster1", alt: "A yellow monster with one eye and a curly nose and tail." },
+    { src: "monster2", alt: "A yellow monster with one eye, a peanut-shaped body, and spindly arms and legs." },
+    { src: "monster3", alt: "A green monster with two eyes, wavy arms, and sharp teeth running down its body." },
+    { src: "monster4", alt: "A red monster with two horns, four arms, and a glum expression." },
+    { src: "monster5", alt: "A green monster with one eye, a glum expression, and a round body." },
+    { src: "monster6", alt: "A green monster, with one eye and a triangular body, doing a handstand." },
+    { src: "monster7", alt: "A purple monster with one eye and two tentacles." },
+    { src: "monster8", alt: "A purple monster with an egg-shaped body, two horns, and an indifferent expression." },
+    { src: "monster9", alt: "A blue, insect-like monster with two eyes, two arms, three legs, and four wings." },
+    { src: "monster10", alt: "A blue, blob-shaped monster with two eyes, two legs, and no arms." },
+    { src: "monster11", alt: "A black monster with a yeti-like body and a big smile." },
+    { src: "sock", alt: "A pair of socks." }
+  ];
 
-      if (props.win === false) {
-        return (
-          "<p>You lost!</p>" +
-          "<button type='button' data-restart>Play Again</button>"
-        );
-      }
-
-      return (
-        "<p>Click/tap a door to reveal a monster... 👹</p>" +
-        "<p>But try not to find the sock! 🧦</p>" +
-        "<div class='grid'>" +
-          createCells(props) +
-        "</div>"
-      );
-    }
-  });
-
-  var data = app.getData();
+  // Track the number of monsters found
+  var monstersFound = 0;
 
 
-
-  /**
-   * Functions
-   */
+  //
+  // Functions
+  //
 
   /**
    * Randomly shuffle an array
    * https://stackoverflow.com/a/2450976/1293256
    * @param  {Array} array The array to shuffle
-   * @return {String}      The first item in the shuffled array
+   * @return {Array}       The shuffled array
    */
-  function shuffle(array) {
+  function shuffle (array) {
+
     var currentIndex = array.length;
     var temporaryValue, randomIndex;
 
@@ -70,114 +58,166 @@
     }
 
     return array;
+
   }
 
   /**
-   * Create the cells of monsters/doors for the grid
+   * Create an HTML string for a single door
+   * @param   {String} monster The name of the current monster
+   * @param   {Number} index   The index of the current monster
+   * @returns {String}         An HTML string
    */
-  function createCells(props) {
+  function createDoor (monster, index) {
+
     return (
-      props.monstersHidden.map(function(monster, index) {
-        if (props.monstersFound.indexOf(monster) > -1) {
-          return (
-            "<div class='cell' aria-live='polite'>" +
-              "<img src='assets/svg/" + monster + ".svg' alt='" + monster + "'>" +
-            "</div>"
-          );
-        }
-
-        return (
-          "<div class='cell' aria-live='polite'>" +
-            "<button type='button' data-monster='" + index + "'>" +
-              "<img src='assets/svg/door.svg' alt='Click the door to see who is behind it'>" +
-            "</button>" +
-          "</div>"
-        );
-      }).join("")
+      "<li class='grid-item'>" +
+        "<button class='grid-button' type='button' data-monster='" + index + "'>" +
+          "<img class='grid-image' src='svg/door.svg' alt='Open the door.'>" +
+        "</button>" +
+      "</li>"
     );
+
   }
 
   /**
-   * Handle win or loss
+   * Create an HTML string for the board
+   * @returns {String} An HTML string
    */
-  function handleWinOrLoss(data) {
-    if (data.monstersFound.indexOf("sock") > -1) {
-      data.win = false;
-    } else {
-      if (data.monstersFound.length === 11) {
-        data.win = true;
-      }
-    }
-  }
+  function createBoard () {
 
-  /**
-   * Reveal the monster/sock behind a door
-   */
-  function openDoor(event) {
-    // Get the closest button
-    var monster = event.target.closest("[data-monster]");
-    if (!monster) return;
+    return (
+      "<p>Find the monsters but try to avoid the socks.</p>" +
+      "<ul class='grid'>" +
+        monsters.map(createDoor).join("") +
+      "</ul>"
+    );
 
-    // Get the current app data
-    var data = app.getData();
-
-    // Get the array index of the monster/sock behind this door
-    // Then get the value at this index
-    monster = parseInt(monster.getAttribute("data-monster"), 10);
-    monster = data.monstersHidden[monster];
-
-    // If the monster/sock has not been found already, add it to the array
-    if (data.monstersFound.indexOf(monster) === -1) {
-      data.monstersFound.push(monster);
-    }
-
-    // Handle win/loss if applicable
-    handleWinOrLoss(data);
-
-    // Update the UI
-    app.setData(data);
   }
 
   /**
    * Start a new game
    */
-  function newGame(event) {
-    // Bail if not a "Play Again" button
-    if (!event.target.hasAttribute("data-restart")) return;
+  function startGame () {
 
-    // Get the current state of the UI
-    var data = app.getData();
+    // Reset the number of monsters found
+    monstersFound = 0;
 
-    // Update the data
-    data.monstersHidden = shuffle(data.monstersHidden);
-    data.monstersFound = [];
-    data.win = null;
+    // Shuffle the monsters array
+    shuffle(monsters);
 
-    // Render the new UI
-    app.setData(data);
+    // Show the board
+    main.innerHTML = createBoard();
+
   }
-
-
 
   /**
-   * Init
+   * Show the losing screen
    */
+  function showLoser () {
 
-  // Add 11 monsters to the array of hidden monsters
-  for (var i = 1; i <= 11; i++) {
-    data.monstersHidden.push("monster" + i);
+    main.innerHTML = (
+      "<h2>You Lose</h2>" +
+      "<p>Oh no, you found the socks!</p>" +
+      "<img src='svg/sock.svg' alt='A pair of socks.'>" +
+      "<p>" +
+        "<button class='reset-button' type='button' data-reset>Play Again</button>" +
+      "</p>"
+    );
+
   }
 
-  // Shuffle the array of hidden monsters
-  data.monstersHidden = shuffle(data.monstersHidden);
+  /**
+   * Make sure the current monster isn't a sock
+   * @param   {Object} monster The current monster
+   * @returns {Boolean}        True or false
+   */
+  function isNotSock (monster) {
+    return monster.src !== "sock"
+  }
 
-  // Render the initial UI
-  app.setData(data);
+  /**
+   * Create an HTML string for a single monster
+   * @param   {String} monster The name of the current monster
+   * @returns {String}         An HTML string
+   */
+  function createMonster (monster) {
 
-  // Update the UI when a door is opened
-  root.addEventListener("click", function(event) {
-    openDoor(event);
-    newGame(event);
-  }, false);
+    return (
+      "<li class='grid-item''>" +
+        "<img class='grid-image' src='svg/" + monster.src + ".svg' alt='" + monster.alt + "'>" +
+      "</li>"
+    );
 
-})(document);
+  }
+
+  /**
+   * Show the winning screen
+   */
+  function showWinner () {
+
+    main.innerHTML = (
+      "<h2>You Win</h2>" +
+      "<p>Awesome, you found all the monsters!</p>" +
+      "<ul class='grid'>" +
+        monsters.filter(isNotSock).map(createMonster).join("") +
+      "</ul>" +
+      "<p>" +
+        "<button class='reset-button' type='button' data-reset>Play Again</button>" +
+      "</p>"
+    );
+
+  }
+
+  /**
+   * Handle click events
+   * @param {Object} event The Event object
+   */
+  function handleClick (event) {
+
+    // If a "Play Again" button was clicked, start a new game
+    if (event.target.matches("[data-reset]")) {
+      startGame();
+      return;
+    }
+
+    // Otherwise, get the door that was clicked
+    var door = event.target.closest("[data-monster]");
+    if (!door) return;
+
+    // Get the monster's index from the door
+    var index = door.getAttribute("data-monster");
+
+    // If it was the sock, show that the user lost
+    if (monsters[index].src === "sock") {
+      showLoser();
+      return;
+    }
+
+    // Otherwise, show the monster
+    door.outerHTML = (
+      "<img src='svg/" + monsters[index].src + ".svg' alt='" + monsters[index].alt + "'>"
+    );
+
+    // Increase the number of monsters found
+    monstersFound++;
+
+    // If all monsters have been found, show that the user won
+    // (-1 for the sock)
+    if (monstersFound === (monsters.length - 1)) {
+      showWinner();
+    }
+
+  }
+
+
+  //
+  // Inits & Event Listeners
+  //
+
+  // Start the game
+  startGame();
+
+  // Handle click events
+  main.addEventListener("click", handleClick);
+
+})();

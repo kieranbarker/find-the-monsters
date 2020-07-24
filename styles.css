@@ -1,35 +1,147 @@
+/**
+ * Base
+ */
+
+ * {
+  box-sizing: border-box;
+}
+
 body {
   width: 88%;
   max-width: 40em;
   margin: 1em auto;
+  background-color: #ececec;
+  font: 1em/1.5 "Avenir Next", Avenir, sans-serif;
 }
 
-button[data-monster] {
-  border: none;
-  background: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-footer {
-  border-top: 1px solid #999;
-  margin-top: 2em;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
+header,
+main {
   text-align: center;
 }
 
-.cell {
+h1,
+a {
+  color: #7e0f7e;
+}
+
+h1 {
+  font: normal 2rem Galindo, "Avenir Next", Avenir, sans-serif;
+  text-shadow: .125rem .125rem #34ac52;
+}
+
+@media (min-width: 31.25em) {
+
+  h1 {
+    font-size: 4rem;
+    text-shadow: .25rem .25rem #34ac52;
+  }
+
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 31.25em) {
+
+  ul,
+  p {
+    font-size: 1.25em;
+  }
+
+}
+
+button {
+  font: inherit;
+}
+
+
+/**
+ * Grid
+ */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.grid-item {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 6em;
-  padding: 1em;
+  padding: .5em;
+}
+
+.grid-button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.grid-image {
+  display: block;
+  max-width: 100%;
+}
+
+
+/**
+ * Reset Button
+ */
+
+.reset-button {
+  padding: .5em 1em;
+  border: 0;
+  border-bottom: .25em solid #34ac52;
+  border-radius: .25em;
+  background: #7e0f7e;
+  color: #fff;
+}
+
+.reset-button:hover,
+.reset-button:active {
+  background: #680d68;
+}
+
+.reset-button:active {
+  border-color: #680d68;
+}
+
+
+/**
+ * Credits
+ */
+
+.credits {
+  text-align: center;
+}
+
+.credits-paragraph {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.credits-list,
+.credits-item {
+  display: inline;
+}
+
+.credits-item::after {
+  content: ",";
+}
+
+.credits-item:nth-last-child(2)::after {
+  content: ", and";
+}
+
+.credits-item:last-child::after {
+  content: ".";
 }
