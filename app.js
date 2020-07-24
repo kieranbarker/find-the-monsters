@@ -72,7 +72,7 @@
     return (
       "<li class='grid-item'>" +
         "<button class='grid-button' type='button' data-monster='" + index + "'>" +
-          "<img class='grid-image' src='svg/door.svg' alt='Open the door.'>" +
+          "<img src='svg/door.svg' alt='Open the door.'>" +
         "</button>" +
       "</li>"
     );
@@ -144,7 +144,7 @@
 
     return (
       "<li class='grid-item''>" +
-        "<img class='grid-image' src='svg/" + monster.src + ".svg' alt='" + monster.alt + "'>" +
+        "<img src='svg/" + monster.src + ".svg' alt='" + monster.alt + "'>" +
       "</li>"
     );
 

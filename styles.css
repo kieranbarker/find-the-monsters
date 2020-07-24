@@ -59,6 +59,11 @@ button {
   font: inherit;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+}
+
 
 /**
  * Grid
@@ -79,11 +84,6 @@ button {
 .grid-button {
   padding: 0;
   background: none;
-}
-
-.grid-image {
-  display: block;
-  max-width: 100%;
 }
 
 
