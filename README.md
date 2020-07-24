@@ -1,19 +1,9 @@
-# Avoid the Sock!
+# Find the Monsters
 
-Find your monster friends and avoid the sock! A game inspired by [*Monsters, Inc.*](https://en.wikipedia.org/wiki/Monsters,_Inc.)
+This is the fifth project for the [Vanilla JS Academy](https://vanillajsacademy.com/).
 
-My fifth project as part of the [Vanilla JS Academy](https://vanillajsacademy.com/) 😎
+It's a simple game inspired by [<i>Monsters, Inc.</i>](https://www.imdb.com/title/tt0198781/)
 
-## Part 1
+Find the monsters but try to avoid the socks. If you find the socks before you've found all the monsters, you lose!
 
-Take an array of monsters (and a sock), mix them up, and display them in the DOM.
-
-## Part 2
-
-Display a grid of doors. Upon clicking/tapping a door, reveal the monster/sock behind it.
-
-## Part 3
-
-Handle the win/loss and allow the user to start a new game.
-
-[View Demo](https://kieranbarker.github.io/avoid-the-sock/)
+[View Demo](https://kieranbarker.github.io/find-the-monsters/)
