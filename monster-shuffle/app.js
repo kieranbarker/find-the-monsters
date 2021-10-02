@@ -1,9 +1,5 @@
 'use strict';
 
-//
-// Variables
-//
-
 const monsters = [
   {
     src: 'monster1',
@@ -47,7 +43,7 @@ const monsters = [
   },
   {
     src: 'monster11',
-    alt: 'A black monster with a yeti-like body and a big smile.'
+    alt: 'A grey monster with a yeti-like body and a big smile.'
   },
   {
     src: 'sock',
@@ -56,11 +52,6 @@ const monsters = [
 ];
 
 const app = document.querySelector('#app');
-
-
-//
-// Functions
-//
 
 /**
  * Randomly shuffle an array
@@ -87,11 +78,6 @@ function shuffle(array) {
   return array;
 }
 
-/**
- * Get the HTML string for a monster
- * @param {any} monster A monster
- * @returns {string} An HTML string
- */
 function getMonsterHTML(monster) {
   return `
     <li>
@@ -100,10 +86,6 @@ function getMonsterHTML(monster) {
   `;
 }
 
-/**
- * Get the HTML string for a grid of monsters
- * @returns {string} An HTML string
- */
 function getGridHTML() {
   return `
     <ul class="grid">
@@ -112,10 +94,4 @@ function getGridHTML() {
   `;
 }
 
-
-//
-// Inits & Event Listeners
-//
-
-// Insert the grid of monsters into the DOM
 app.innerHTML = getGridHTML();
