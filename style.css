@@ -19,7 +19,6 @@ ul[class] {
 }
 
 img {
-  display: block;
   max-width: 100%;
   height: auto;
 }
@@ -51,10 +50,8 @@ footer {
 
 .grid > * {
   display: flex;
-  padding: 1em;
   justify-content: center;
   align-items: center;
-  background: #e5e5e5;
 }
 
 .credits-paragraph,
