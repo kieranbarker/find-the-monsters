@@ -1,7 +1,3 @@
-// @ts-check
-
-/** @typedef { import('../types.d').Monster } Monster */
-
 ;(function() {
 
   'use strict';
@@ -10,7 +6,6 @@
   // Variables
   //
 
-  /** @type {Monster[]} */
   const monsters = [
     {
       src: 'monster1',
@@ -62,7 +57,6 @@
     }
   ];
 
-  /** @type {HTMLDivElement} */
   const app = document.querySelector('#app');
 
 
@@ -97,7 +91,7 @@
 
   /**
    * Get the HTML string for a monster
-   * @param {Monster} monster A monster
+   * @param {any} monster A monster
    * @returns {string} An HTML string
    */
   function getMonsterHTML(monster) {
