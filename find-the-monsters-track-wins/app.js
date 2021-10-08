@@ -1,86 +1,11 @@
-'use strict';
-
-const monsters = [
-  {
-    src: 'monster1',
-    alt: 'A yellow monster with one eye and a curly nose and tail.'
-  },
-  {
-    src: 'monster2',
-    alt: 'A yellow monster with one eye, a peanut-shaped body, and spindly arms and legs.'
-  },
-  {
-    src: 'monster3',
-    alt: 'A green monster with two eyes, wavy arms, and sharp teeth running down its body.'
-  },
-  {
-    src: 'monster4',
-    alt: 'A red monster with two horns, four arms, and a glum expression.'
-  },
-  {
-    src: 'monster5',
-    alt: 'A green monster with one eye, a glum expression, and a round body.'
-  },
-  {
-    src: 'monster6',
-    alt: 'A green monster, with one eye and a triangular body, doing a handstand.'
-  },
-  {
-    src: 'monster7',
-    alt: 'A purple monster with one eye and two tentacles.'
-  },
-  {
-    src: 'monster8',
-    alt: 'A purple monster with an egg-shaped body, two horns, and an indifferent expression.'
-  },
-  {
-    src: 'monster9',
-    alt: 'A blue, insect-like monster with two eyes, two arms, three legs, and four wings.'
-  },
-  {
-    src: 'monster10',
-    alt: 'A blue, blob-shaped monster with two eyes, two legs, and no arms.'
-  },
-  {
-    src: 'monster11',
-    alt: 'A grey monster with a yeti-like body and a big smile.'
-  },
-  {
-    src: 'sock',
-    alt: 'A pair of socks.'
-  }
-];
-
-const numMonsters = monsters.length - 1; // - 1 for the sock
-
-let numFound = 0;
+import { shuffle } from '../helpers.js';
+import { monsters } from '../monsters.js';
 
 const app = document.querySelector('#app');
+const monstersCopy = [ ...monsters ];
+const numMonsters = monstersCopy.length - 1; // - 1 for the sock
 
-/**
- * Randomly shuffle an array
- * {@link https://stackoverflow.com/a/2450976/1293256}
- * @param {any[]} array The array to shuffle
- * @returns {any[]} The shuffled array
- */
-function shuffle(array) {
-  let currentIndex = array.length;
-  let temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
+let numFound = 0;
 
 function getDoorHTML(monster, index) {
   return `
@@ -95,14 +20,14 @@ function getDoorHTML(monster, index) {
 function getGridHTML() {
   return `
     <ul class="grid">
-      ${monsters.map(getDoorHTML).join('')}
+      ${monstersCopy.map(getDoorHTML).join('')}
     </ul>
   `;
 }
 
 function startGame() {
   numFound = 0;
-  shuffle(monsters);
+  shuffle(monstersCopy);
   app.innerHTML = getGridHTML();
 }
 
@@ -110,14 +35,14 @@ function getLoseHTML() {
   return `
     <article>
       <header>
-        <h2>You Lose</h2>
+        <h2>You lose</h2>
         <p>Oh no, you found the sock!</p>
       </header>
       <p>
         <img src="../svg/sock.svg" alt="A pair of socks.">
       </p>
       <p>
-        <button type="button" data-reset>Play Again</button>
+        <button type="button" data-reset>Play again</button>
       </p>
     </article>
   `;
@@ -132,26 +57,24 @@ function getWinHTML() {
   return `
     <article>
       <header>
-        <h2>You Win</h2>
+        <h2>You win</h2>
         <p>Awesome, you found all the monsters!</p>
       </header>
       <ul class="grid">
-        ${monsters.filter(isMonster).map(monster => (
+        ${monstersCopy.filter(isMonster).map(monster => (
           `<li>${getMonsterHTML(monster)}</li>`
         )).join('')}
       </ul>
       <p>
-        <button type="button" data-reset>Play Again</button>
+        <button type="button" data-reset>Play again</button>
       </p>
     </article>
   `;
 }
 
 function openDoor(door) {
-  let index = door.dataset.index;
-  index = parseInt(index, 10);
-
-  const monster = monsters[index];
+  const index = parseInt(door.dataset.index, 10);
+  const monster = monstersCopy[index];
 
   if (monster.src === 'sock') {
     app.innerHTML = getLoseHTML();
@@ -178,10 +101,8 @@ function handleClick(event) {
 
   if (isResetButton) {
     startGame();
-    return;
   }
 }
 
 startGame();
-
 app.addEventListener('click', handleClick);
